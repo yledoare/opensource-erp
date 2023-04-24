@@ -7,7 +7,7 @@ networks:
         internal: false
 
 services:
-    mariadb:
+    dolidb:
         image: mariadb:latest
         environment:
             MYSQL_ROOT_PASSWORD: root
@@ -18,18 +18,18 @@ services:
             - internal-pod
             - external-pod
 
-    web:
+    doliweb:
         build: .
         environment:
             HOST_USER_ID: $HOST_USER_ID
         volumes:
-            - ../../htdocs:/var/www/html/
+            - ../../dolibarr-17.0.1/htdocs:/var/www/html/
             - ../../documents:/var/documents
         ports:
             - "8029:80"
             - "9000:9000"
         depends_on:
-            - mariadb
+            - dolidb
         networks:
             - internal-pod
             - external-pod
