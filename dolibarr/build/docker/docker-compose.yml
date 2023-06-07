@@ -1,35 +1,18 @@
 version: '3'
-
-networks:
-    internal-pod:
-        internal: true
-    external-pod:
-        internal: false
-
 services:
-    dolidb:
+    dolidb17:
         image: mariadb:latest
         environment:
-            MYSQL_ROOT_PASSWORD: root
+            MYSQL_ROOT_PASSWORD: rootpwd
             MYSQL_DATABASE: dolibarr
-        ports:
-            - "3306:3306"
-        networks:
-            - internal-pod
-            - external-pod
-
-    doliweb:
+    doliweb17:
         build: .
         environment:
             HOST_USER_ID: $HOST_USER_ID
         volumes:
-            - ../../dolibarr-17.0.1/htdocs:/var/www/html/
+            - ../../dolibarr-17.0.2/htdocs:/var/www/html/
             - ../../documents:/var/documents
         ports:
-            - "8029:80"
-            - "9000:9000"
+            - "8070:80"
         depends_on:
-            - dolidb
-        networks:
-            - internal-pod
-            - external-pod
+            - dolidb17
