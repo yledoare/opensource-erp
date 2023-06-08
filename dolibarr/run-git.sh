@@ -9,4 +9,7 @@ sed -i 's/25:25/2525:2525/' docker-compose.yml
 sed -i 's/host-gateway/127.0.0.1/' docker-compose.yml
 sed -i 's/rootpassfordev/rootpwd/' docker-compose.yml
 HOST_USER_ID=$(id -u) docker-compose up -d
-#  docker exec -ti docker_mariadb_1 mysql -u root -proot dolibarr
+# docker exec -ti docker_webprd_1 mysql -h mariadbprd -u root -prootpwd dolibarr
+# docker cp dolibarr-git/dev/initdemo/mysqldump_dolibarr_17.0.0.sql docker_web_1:.
+# docker exec -ti docker_web_1 bash
+# mysql -h mariadb -u root -prootpwd dolibarr < /mysqldump_dolibarr_17.0.0.sql
