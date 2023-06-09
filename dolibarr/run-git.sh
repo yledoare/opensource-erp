@@ -1,4 +1,4 @@
-[ ! -e dolibarr-git ] && git clone https://github.com/Dolibarr/dolibarr dolibarr-git
+[ ! -e dolibarr-git ] && git clone --depth 1  https://github.com/Dolibarr/dolibarr dolibarr-git
 cd dolibarr-git/build/docker
 git checkout docker-compose.yml
 sed -i 's/3306:3306/3307:3306/' docker-compose.yml
