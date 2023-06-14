@@ -10,6 +10,7 @@ services:
       - ./etc/odoo:/etc/odoo/
       - ./log/odoo:/var/odoo
       - ./addons:/mnt/addons
+      - ./l10n-france:/mnt/l10n-france
   db:
     image: postgres:13
     environment:
