@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   web:
-    image: odoo-14
+    image: odoo:15
     depends_on:
       - db
     ports:
@@ -10,7 +10,6 @@ services:
       - ./etc/odoo:/etc/odoo/
       - ./log/odoo:/var/odoo
       - ./addons:/mnt/addons
-      - ./l10n-france:/mnt/l10n-france
   db:
     image: postgres:13
     environment:
