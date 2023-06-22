@@ -1,0 +1,13 @@
+python-stdnum>=1.18
+
+
+   1  wget https://files.pythonhosted.org/packages/8a/6d/18a1a723daffa3735c4d3a724492f3d5bb441e703b0859f7eeb99c1ac5c1/python-stdnum-1.18.tar.gz
+    2  curl -O file.tar.gz https://files.pythonhosted.org/packages/8a/6d/18a1a723daffa3735c4d3a724492f3d5bb441e703b0859f7eeb99c1ac5c1/python-stdnum-1.18.tar.gz
+    3  curl -O file.tar.gz https://files.pythonhosted.org/packages/8a/6d/18a1a723daffa3735c4d3a724492f3d5bb441e703b0859f7eeb99c1ac5c1/python-stdnum-1.18.tar.gz
+    4  apt-get install wget
+    5  wget https://files.pythonhosted.org/packages/8a/6d/18a1a723daffa3735c4d3a724492f3d5bb441e703b0859f7eeb99c1ac5c1/python-stdnum-1.18.tar.gz
+    6  tar xzvf python-stdnum-1.18.tar.gz
+    7  cd python-stdnum-1.18
+    8  ls
+    9  python3 setup.py build
+   10  python3 setup.py install --prefix=/usr/
