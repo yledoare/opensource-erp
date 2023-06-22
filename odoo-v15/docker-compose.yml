@@ -9,10 +9,10 @@ services:
     volumes:
             #      - ./etc/odoo:/etc/odoo/
       - ./log/odoo:/var/odoo
-      - ./addons/oca:/mnt/addons
+      - ./addons/oca:/mnt/extra-addons
       - ./filestore:/var/lib/odoo/.local/share/Odoo/filestore/
   db:
-    image: postgres:13
+    image: postgres:14
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=odoo
