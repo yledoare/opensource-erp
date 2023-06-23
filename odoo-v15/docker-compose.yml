@@ -1,18 +1,15 @@
 version: '3.1'
 services:
   web:
-    image: odoo:15
+    image: odoo-15
     depends_on:
       - db
     ports:
       - "8064:8069"
     volumes:
-            #      - ./etc/odoo:/etc/odoo/
-      - ./log/odoo:/var/odoo
       - ./addons/oca:/mnt/extra-addons
-      - ./filestore:/var/lib/odoo/.local/share/Odoo/filestore/
   db:
-    image: postgres:14
+    image: postgres:13
     environment:
       - POSTGRES_DB=postgres
       - POSTGRES_PASSWORD=odoo
