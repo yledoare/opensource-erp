@@ -8,9 +8,9 @@ services:
       - "8064:8069"
     volumes:
             #      - ./etc/odoo:/etc/odoo/
-      - ./log/odoo:/var/odoo
-      - ./addons/oca:/mnt/addons
-      - ./filestore:/var/lib/odoo/.local/share/Odoo/filestore/
+            #      - ./log/odoo:/var/odoo
+      - ./addons/oca:/mnt/extra-addons
+        #      - ./filestore:/var/lib/odoo/.local/share/Odoo/filestore/
   db:
     image: postgres:13
     environment:
