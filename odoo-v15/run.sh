@@ -3,7 +3,7 @@ ODOO="15.0"
 install -d addons/oca
 install -d filestore
 
-for oca in edi l10n-france reporting-engine intrastat-extrastat e-commerce  geospatial  manufacture  server-tools
+for oca in bank-payment community-data-files edi l10n-france reporting-engine intrastat-extrastat e-commerce  geospatial  manufacture  server-tools
 do
   [ ! -e addons/$oca ] && git clone https://github.com/OCA/$oca.git addons/$oca
   cd addons/$oca || exit 1
