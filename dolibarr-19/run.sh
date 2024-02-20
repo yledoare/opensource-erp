@@ -1,4 +1,4 @@
-DOLIBARR=18.0.5
+DOLIBARR=19.0.0
 [ ! -e $DOLIBARR.tar.gz ] && wget https://github.com/Dolibarr/dolibarr/archive/refs/tags/$DOLIBARR.tar.gz
 [ ! -e dolibarr-$DOLIBARR ] && tar xzvf $DOLIBARR.tar.gz
 cd dolibarr-$DOLIBARR 
@@ -12,5 +12,5 @@ sed -i 's/9000:9000/9001:9001/' docker-compose.yml
 sed -i 's/25:25/2525:2525/' docker-compose.yml
 sed -i 's/host-gateway/127.0.0.1/' docker-compose.yml
 sed -i 's/rootpassfordev/rootpwd/' docker-compose.yml
-sed -i 's/build: ./image: dolibarr-18/' docker-compose.yml
+sed -i 's/build: ./image: dolibarr-19/' docker-compose.yml
 HOST_USER_ID=$(id -u) docker-compose up -d
