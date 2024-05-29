@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="shopify_view_move_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_date']" position="after">
+                <field name="shopify_instance_id" readonly="1"/>                
+                <field name="shopify_refund_id" readonly="1"/>
+                <field name="is_refund" readonly="1"/>
+                <field name="is_exported" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="shopify_view_out_credit_note_tree_inherit" model="ir.ui.view">
+        <field name="name">account.out.invoice.tree</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_out_credit_note_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="shopify_instance_id"/>               
+                <field name="shopify_id"/>
+                <field name="is_exported"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_shopify_refund_move_out" model="ir.actions.act_window">
+        <field name="name">Credit Notes</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,kanban,form</field>
+        <field name="view_id" ref="account.view_out_credit_note_tree"/>
+        <field name="search_view_id" ref="account.view_account_invoice_filter"/>
+        <field name="domain">[('move_type', '=', 'out_refund')]</field>
+        <field name="context">{'default_move_type': 'out_refund'}</field>
+    </record>
+
+    <record id="action_call_wizard_generate_refund_account_move" model="ir.actions.server">
+        <field name="name">Generate Shopify Refund</field>
+        <field name="model_id" ref="model_account_move"/>
+        <field name="binding_model_id" ref="model_account_move"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                if records.shopify_refund_id :
+                    action = records.action_fail_refund_button("Refund already processed!!!")
+
+                elif records.move_type == 'out_refund':
+                    action = records.action_generate_refund_account_move()
+
+                else :
+                    action = records.action_fail_refund_button("Please select refund invoice!!!")
+        </field>
+    </record>             
+</odoo>

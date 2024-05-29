@@ -1,0 +1,41 @@
+<odoo>
+    <record model="ir.ui.view" id="import_from_ecom_provider_shopify_form_view">
+        <field name="name">import.from.ecom.provider.shopify.form.view</field>
+        <field name="inherit_id" ref="eg_ecommerce_base.import_from_ecom_provider_form_view"/>
+        <field name="model">import.from.ecom.provider</field>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group[1]" position="after">
+                <group invisible="provider !=  'eg_shopify' or mapping_type != 'import'">
+                    <group>
+                        <separator string="Product"/>
+                        <field name="spf_product"/>
+                    </group>
+                    <group>
+                        <separator string="Customer"/>
+                        <field name="spf_import_customer"/>
+                    </group>
+                    <group>
+                        <separator string="Order"/>
+                        <field name="spf_import_sale_order"/>
+                        <field name="spf_product_create_default_import"
+                               invisible="spf_import_sale_order ==  False"/>
+                    </group>
+                </group>
+                <group invisible="provider != 'eg_shopify' or mapping_type != 'export'">
+                    <group>
+                        <separator string="Product"/>
+                        <field name="spf_product_export"/>
+                    </group>
+                </group>
+                <group invisible="provider != 'eg_shopify' or mapping_type != 'update_import'"
+                       name="shopify_import_update">
+                    <span style="color:red;">If you use Update Import Feature so Upgrade to Pro Version!!!</span>
+                </group>
+                <group invisible="provider != 'eg_shopify' or mapping_type != 'update_export'"
+                       name="shopify_export_update">
+                    <span style="color:red;">If you use Update Export Feature so Upgrade to Pro Version!!!</span>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

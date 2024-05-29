@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_customer_form_shopify_inherit" model="ir.ui.view">
+        <field name="name">shopify.res.partner.form.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//field[@name='website']" position="after">
+                <field name="shopify_instance_id" readonly="1"/>
+                <field name="shopify_user_id" readonly="1"/>
+                <field name="is_exported" readonly="0"/>
+            </xpath>
+
+            <field name="child_ids" position="attributes">
+                <attribute name="context">{'default_email': email}</attribute>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="view_cutomer_tree_shopify_inherit" model="ir.ui.view">
+        <field name="name">shopify.res.partner.tree.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">shopify_import_customer_button</attribute>
+            </xpath>
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="shopify_instance_id" readonly="1"/>
+                <field name="shopify_user_id" readonly="1"/>
+                <field name="is_exported" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_cutomer_kanban_shopify_inherit" model="ir.ui.view">
+        <field name="name">shopify.res.partner.kanban.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="js_class">shopify_import_customer_k_button</attribute>
+            </xpath>
+        </field>
+    </record>    
+
+    <record id="view_customer_search_shopify_inherit" model="ir.ui.view">
+        <field name="name">shopify.res.partner.filter.search.view.inherit</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Shopify Synced Customers" name="shopify_imported_customers"
+                        domain="[('is_exported', '=', True)]"/>
+                <filter string="Shopify UnSynced Customers" name="shopify_export_customers"
+                        domain="[('is_exported', '=', False)]"/>                        
+            </search>
+        </field>
+    </record>
+
+    <record id="action_shopify_res_partner" model="ir.actions.act_window">
+        <field name="name">Shopify Contacts</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_id" ref="base.view_partner_tree"/>
+        <field name="context">{'search_default_shopify_imported_customers': 1}</field>
+        <field name="view_mode">tree,kanban,form</field>
+    </record>
+
+</odoo>

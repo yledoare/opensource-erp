@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_shopify_instance_form" model="ir.ui.view">
+        <field name="name">shopify.instance.form</field>
+        <field name="model">shopify.instance</field>
+        <field name="arch" type="xml">
+            <form string="Configure Instance">
+                <header>
+                    <button string='Authenticate' type="object" name="connection_authenticate" class="oe_highlight"
+                        icon="fa-plug" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="shop_url" />
+                            <field name="admin_api_key" password="True" />
+                            <field name="api_version" />
+                            <field name='shopify_company_id' required="1"
+                                options="{'no_open':True,'no_create':True,'no_create_edit':True}"
+                                string="Company" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_shopify_instance_tree" model="ir.ui.view">
+        <field name="name">shopify.instance.tree.view</field>
+        <field name="model">shopify.instance</field>
+        <field name="arch" type="xml">
+            <tree string="Shopify Instance">
+                <field name="name" />
+                <field name="shopify_company_id" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_shopify_instance_kanban" model="ir.ui.view">
+        <field name="name">shopify.instance.kanban</field>
+        <field name="model">shopify.instance</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard o_kanban_shopify" create="false"
+                sample="1">
+                <field name="name" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title">
+                                    <div class="o_primary">
+                                        <t t-esc="record.name.value" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <group class="dashboard_graph_data">
+                                    <field name="dashboard_graph_data" widget="shopify_dashboard_graph"
+                                        graph_type="bar" />
+                                </group>
+                            </div>
+                        </div>
+                    </t>
+                    <br></br>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_shopify_instance_search" model="ir.ui.view">
+        <field name="name">shopify.instance.search</field>
+        <field name="model">shopify.instance</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]" />
+            </search>
+        </field>
+    </record>
+
+    <record id="action_shopify_instance_list" model="ir.actions.act_window">
+        <field name="name">Shopify Instances</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">shopify.instance</field>
+        <field name="view_id" ref="view_shopify_instance_tree" />
+        <field name="view_mode">tree,form</field>
+        <field name="target">current</field>
+    </record>
+
+    <record id="action_shopify_dashboard" model="ir.actions.act_window">
+        <field name="name">Shopify Dashboard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">shopify.instance</field>
+        <field name="view_id" ref="view_shopify_instance_kanban" />
+        <field name="view_mode">kanban</field>
+        <field name="target">current</field>
+    </record>
+
+</odoo>

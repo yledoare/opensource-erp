@@ -1,0 +1,32 @@
+<odoo>
+    <record model="ir.ui.view" id="export_product_shopify_wizard_form_view">
+        <field name="name">export.product.shopify.wizard.form.view</field>
+        <field name="model">export.product.shopify.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="instance_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="product_detail"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button name="export_product_middle_layer" type="object"
+                                string="Export" class="oe_highlight"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record model="ir.actions.act_window" id="action_export_product_shopify_wizard">
+        <field name="name">Export Product Shopify</field>
+        <field name="res_model">export.product.shopify.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

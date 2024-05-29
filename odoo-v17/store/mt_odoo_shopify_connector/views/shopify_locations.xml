@@ -1,0 +1,46 @@
+<odoo>
+    <data>
+        <record id="shopify_location_form_view" model="ir.ui.view">
+            <field name="name">shopify.location.form</field>
+            <field name="model">shopify.location</field>
+            <field name="arch" type="xml">
+                <form string="Shopify Location">
+                    <sheet>
+                        <div class="oe_title">
+                            <h4>Location Details</h4>
+                            <h1><field name="name" readonly="1"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="shopify_location_id" readonly="1"/>
+                                <field name="is_legacy" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="shopify_instance_id" readonly="1"/>
+                                <field name="is_active" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="shopify_location_tree_view" model="ir.ui.view">
+            <field name="name">shopify.location.tree</field>
+            <field name="model">shopify.location</field>
+            <field name="arch" type="xml">
+                <tree string="Shopify Location">
+                    <field name="name"/>
+                    <field name="shopify_instance_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_shopify_location_view" model="ir.actions.act_window">
+            <field name="name">Shopify Location</field>
+            <field name="res_model">shopify.location</field>
+            <field name="view_id" ref="shopify_location_tree_view"/>
+            <field name="view_mode">tree,form</field>
+        </record>
+    </data>
+</odoo>
