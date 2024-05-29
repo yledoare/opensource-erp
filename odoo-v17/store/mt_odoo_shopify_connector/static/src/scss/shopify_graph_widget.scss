@@ -1,0 +1,161 @@
+.o_kanban_dashboard .o_kanban_record, .o_kanban_dashboard .o_kanban_ungrouped, .o_kanban_dashboard .o_kanban_renderer {
+    width: 100%!important;
+}
+.dashboard_graph_shopify {
+    width: 100%;
+    margin: 10px auto;
+ } 
+.dashboard_graph_shopify .kanban_graph .chartjs-render-monitor {
+    width: 100% !important;
+    padding: 3px 10px;
+    height: 230px !important;
+}
+.dashboard_graph_shopify .kanban_graph.col-7 {
+    max-width: 58.333% !important;
+}
+.dashboard_graph_shopify .kanban_graph {
+    margin: 0 auto !important;
+    border: 1px solid #cbcbcb;
+    border-radius: 7px;
+    padding: 10px;
+    width: 100%;
+}
+.dashboard_graph_shopify .shopify_graph{
+    max-height:230px !important;
+}
+.boxes {
+    margin: 0;
+    padding: 6px 10px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    border-radius: 10px;
+    display: inline-block;
+    width: 50%;
+    box-shadow: none;
+  }
+
+  .boxes:hover {
+    padding-right: 15px;
+    padding-left: 15px;
+  } 
+
+.synced_data_box a {
+    width: 100%;
+    float: none;
+    padding:  0px;
+    font-size: 12px;
+    border-radius: 15px;
+    border-color: #ced4da;
+    font-weight: bold;
+    height: auto;
+    margin-right: 0px;
+    box-shadow: 0 0 7px #aeaeae;
+    display: block;
+    color: white !important;
+    cursor: pointer;
+  }
+  
+  .boxes a .graph_icon {
+    font-size: 3em;
+    display: inline-block;
+    background: transparent;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    padding: 11px 0;
+    box-shadow: 3px 0px 14px -3px #000;
+  }
+  .box-1 {
+    background-color: #00b6bc;
+  }
+  .box-2 {
+    background-color: #385175;
+  }
+  .box-3 {
+    background-color: #d66060;
+  }
+
+
+  .graph_top_menu {
+    font-size: small;
+    font-family: revert;
+    border-radius: 7px;
+    max-width: none;
+    top: auto;
+    right: 40px;
+    padding: 0 10px;
+    display: flex;
+    width: auto !important;
+  }
+
+  .select_time_period {
+    background: #45b39d;
+    padding: 0 10px;
+    border-radius: 7px;
+    margin: auto;
+    display: inline-table;
+  }
+
+  .graph_chart_select {
+    color: #fff;
+    background: #93296b;
+    border-radius: 7px;
+    margin: auto 10px auto 0;
+    padding: 3px 5px;
+  }
+
+  .graph_chart_select a {
+    font-size: 16px !important;
+    color: #fff;
+    background: transparent;
+    cursor: pointer;
+  }
+  .select_time_period #sort_order_data {
+    border: none;
+    padding: 5px;
+    font-weight: bold;
+    color: #fefefe;
+    width: 110px;
+  }
+  .total_sale {
+    font-size: 1.8rem !important;
+    color: #3ac47d;
+    font-weight: bold;
+  }
+  .sale_title {
+    color: #777777
+  }
+  .dashboard_graph_data {
+    width: 100%;
+    display: grid;
+    min-width: 420px;
+  }
+
+
+
+
+  @media only screen and (max-width: 991px) {
+      .dashboard_graph_shopify .kanban_graph.col-7 {
+          max-width: 100% !important;
+      }
+      .row.shopify_class.col-5 {
+          width: 100%;
+          margin: 0 auto !important;
+          padding: 0;
+      }
+      .boxes {
+          width: 33.33%;
+      }
+      .synced_data_box {
+          margin: 10px 0 !important;
+          padding: 0;
+      }
+  }
+
+  @media only screen and (max-width: 559px) {
+      .boxes {
+          width: 100%;
+      }
+  }

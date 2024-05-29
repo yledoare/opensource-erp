@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="menu_shopify_root"
+        name="Shopify Connect"
+        sequence="10" />
+
+        <menuitem id="menu_dashboard"
+            name="Dashboard"
+            parent="menu_shopify_root"
+            action="action_shopify_dashboard"
+            sequence="1"/>    
+        <menuitem id="menu_export_data"
+            name="Export/Import"
+            parent="menu_shopify_root"
+            sequence="2"/>  
+        <menuitem id="menu_instance"
+            name="Shopify Instance"
+            parent="menu_shopify_root"
+            action="action_shopify_instance_list"
+            sequence="3"/>
+        <menuitem id="shopify_config_menu"
+            name="Configuration"
+            parent="menu_shopify_root"
+            sequence="100"/>            
+            
+        <menuitem id="menu_order"
+            name="Orders"
+            parent="menu_export_data"
+            sequence="8"/> 
+
+        <menuitem id="menu_products"
+            name="Products"
+            parent="menu_export_data"
+            sequence="2"/>   
+        <menuitem id="menu_export_products"
+            name="Products"
+            parent="menu_products"
+            action="action_product_template_tree_view_shopify"
+            sequence="3"/>            
+    
+        <menuitem id="menu_locations"
+              name="Locations"
+              parent="menu_export_data"
+              sequence="4"/>  
+        <menuitem id="menu_import_locations"
+              name="Import Locations"
+              parent="menu_locations"
+              action="action_wizard_shopify_import_locations"
+              sequence="5"/>    
+              
+        <menuitem id="menu_inventory"
+              name="Inventory"
+              parent="menu_export_data"
+              sequence="6"/>  
+        <menuitem id="menu_update_inventory"
+              name="Update Invenotry"
+              parent="menu_inventory"
+              action="action_wizard_shopify_update_inventory"
+              sequence="7"/>               
+
+
+
+        <menuitem id="menu_data_list"
+              name="Data"
+              parent="menu_shopify_root"
+              sequence="2"/>  
+        <menuitem id="menu_refund"
+              name="Refund"
+              parent="menu_data_list"
+              sequence="6"/>  
+        <menuitem id="menu_refund_list"
+              name="Refund List"
+              parent="menu_refund"
+              action="action_shopify_refund_move_out"
+              sequence="7"/>               
+</odoo>

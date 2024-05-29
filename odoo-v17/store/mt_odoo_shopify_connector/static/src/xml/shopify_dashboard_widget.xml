@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="mt_odoo_shopify_connector.shopify_graph_dashboard_widget" name="Shopify Dashboard Graph" owl="1">
+        <div class="dashboard_graph_shopify col-12 row" t-att-class="props.className"
+             t-attf-class="o_graph_{{ props.graphType }}chart">
+
+            <div class="container o_kanban_card_content p-0 kanban_graph col-7 position-relative">
+                <div class="row mt8 mb8 mx-0 align-items-center shopify_graph_details">
+                    <div class="border-0 h7 position-absolute graph_top_menu">
+                        <div class="graph_chart_select" >
+                            <a t-on-click="_GraphLineCharts">
+                                <i aria-hidden="true" class="fa fa-line-chart"></i>
+                            </a>
+                        </div>
+                        <div class="graph_chart_select" >
+                            <a t-on-click="_GraphBarCharts">
+                                <i aria-hidden="true" class="fa fa-bar-chart"></i>
+                            </a>
+                        </div>                        
+                        <div class="border-0 h7 select_time_period">
+                            <select id="sort_order_data" t-on-click="_sortOrders">
+                                <option value="week" t-att-selected="data.sort_on == 'week' ? 'selected' : undefined">
+                                    Current Week
+                                </option>
+                                <option value="month" t-att-selected="data.sort_on == 'month' ? 'selected' : undefined">
+                                    Current Month
+                                </option>
+                                <option value="year" t-att-selected="data.sort_on == 'year' ? 'selected' : undefined">
+                                    Current Year
+                                </option>
+                                <option value="all" t-att-selected="data.sort_on == 'all' ? 'selected' : undefined">
+                                    All
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="col-3 pr-2">
+                        <p class="mb0 sale_title">Total Sales</p>
+                        <h4 class="mb0">
+                            <span class="total_sale">
+                                <t t-esc="data.shop_currency_symbol + data.sales_total"/>
+                            </span>
+                        </h4>
+                    </div>
+                </div>
+                <div class="shopify_graph">
+                    <canvas t-ref="canvas"/>
+                </div>
+            </div>
+
+            <div class="row shopify_class col-5">
+                <div class="col-12 mt4 synced_data_box">
+                    <div class="boxes">
+                        <a id="instance_product" class="box-1" t-on-click="_SyncedProducts">
+                            <div class="col-4 graph_icon">
+                                <i aria-hidden="true" class="fa fa-cubes fa-5 "></i>
+                            </div>
+                            <div style="margin: auto;display: inline-block;" class="col-8">
+                            <p class="text-center mb0 font-weight-bold">
+                                <t t-if="data.shop_products">
+                                    <t t-esc="data.shop_products.product_count"/>
+                                </t>
+                            </p>
+                            <p class="text-center mb0">Products</p>
+                        </div>
+                        </a>
+                    </div>
+                    <div class="boxes">
+                        <a id="instance_customer" class="box-2" t-on-click="_SyncedCustomers">
+                            <div class="col-4 graph_icon">
+                                <i aria-hidden="true" class="fa fa-users "></i>
+                            </div>
+                            <div style="margin: auto;display: inline-block;" class="col-8">
+                            <p class="text-center mb0 font-weight-bold">
+                                <t t-if="data.shop_customers">
+                                    <t t-esc="data.shop_customers.customer_count"/>
+                                </t>
+                            </p>
+                            <p class="text-center mb0">Customers</p>
+                        </div>
+                        </a>
+                    </div>
+                    <div class="boxes">
+                        <a id="instance_order" class="box-3" t-on-click="_SyncedOrders">
+                            <div class="col-4 graph_icon">
+                                <i aria-hidden="true" class="fa fa-globe  "></i>
+                            </div>
+                            <div style="margin: auto;display: inline-block;" class="col-8">
+                            <p class="text-center mb0 font-weight-bold order_count">
+                                <t t-if="data.shop_orders">
+                                    <t t-esc="data.shop_orders.order_count"/>
+                                </t>
+                            </p>
+                            <p class="text-center mb0">Orders</p>
+                        </div>
+                        </a>
+                     </div>
+
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

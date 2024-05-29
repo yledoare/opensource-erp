@@ -1,0 +1,22 @@
+<odoo>
+    <record id="eg_product_template_shopify_export_server_action" model="ir.actions.server">
+        <field name="name">Export to Shopify</field>
+        <field name="model_id" ref="model_eg_product_template"/>
+        <field name="binding_model_id" ref="model_eg_product_template"/>
+        <field name="state">code</field>
+        <field name="code">action = records.export_product_shopify_server()</field>
+    </record>
+
+    <record id="product_template_shopify_server_action" model="ir.actions.server">
+        <field name="name">Export to Shopify</field>
+        <field name="model_id" ref="model_product_template"/>
+        <field name="binding_model_id" ref="model_product_template"/>
+        <field name="state">code</field>
+        <field name="code">if record:
+            action_values = env.ref('eg_shopify_integration_lite.action_export_product_shopify_wizard').read()[0]
+            action_values.update({'context': env.context})
+            action = action_values
+        </field>
+    </record>
+
+</odoo>

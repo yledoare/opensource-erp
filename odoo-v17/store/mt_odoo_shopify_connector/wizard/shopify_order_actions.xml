@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_shopify_order_actions_wizard_form" model="ir.ui.view">
+        <field name="name">shopify.order.actions.wizard.form.view</field>
+        <field name="model">shopify.order.actions.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Select Instance">
+                <sheet>
+
+                    <div>
+                        <p colspan="2" class="alert alert-warning" role="alert">
+                            <u>
+                                <h3 style="font-weight:bold;color:#7d5a29">Note :</h3>
+                            </u>
+                            <b>
+                                Are you sure to perform actions in this shopify instance?
+                            </b>
+                        </p>
+                    </div>
+
+                    <group>
+                        <field name="shopify_instance_id" required="1" options="{'no_create':True,'no_create_edit':True}"/>
+                        <field name="order_actions" widget="radio" options="{'horizontal': true}" invisible="order_action_status != 'default'"/>
+                        <field name="order_actions_draft_order" widget="radio" options="{'horizontal': true}" invisible="order_action_status != 'draft_order'"/>
+                        <field name="order_actions_new_order" widget="radio" options="{'horizontal': true}" invisible="order_action_status != 'new_order'"/>
+                        <field name="order_actions_info_update" widget="radio" options="{'horizontal': true}" invisible="order_action_status != 'info_update'"/>
+                        <field name="order_actions_no_fulfill" widget="radio" options="{'horizontal': true}" invisible="order_action_status != 'no_fulfill'"/>
+                        <field name="order_actions_payment_complete" widget="radio" options="{'horizontal': true}" invisible="order_action_status != 'payment_complete'"/>
+                        <field name="order_actions_fulfill_complete" widget="radio" options="{'horizontal': true}" invisible="order_action_status != 'fulfill_complete'"/>
+                        <field name="order_action_status" invisible="1"/>
+                    </group>
+
+                    <footer>
+                        <button name="shopify_action" string="Generate" type="object"
+                                class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel"/>
+                    </footer>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_shopify_order_actions_wizard" model="ir.actions.act_window">
+        <field name="name">Shopify Actions</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">shopify.order.actions.wizard</field>
+        <field name="view_id" ref="view_shopify_order_actions_wizard_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

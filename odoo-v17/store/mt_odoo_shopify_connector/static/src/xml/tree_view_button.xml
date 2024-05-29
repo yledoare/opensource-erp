@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ShopifyImportList.Buttons" t-inherit="web.ListView.Buttons" t-inherit-mode="primary" owl="1">
+        <xpath expr="//div[hasclass('o_list_buttons')]" position="after">
+            <button type="button" t-if="props.resModel == 'product.template'" class="btn btn-primary"
+                    style="margin-left: 5px;" t-on-click="onClickShopifyProductImport">
+                Import from Shopify
+            </button>
+
+            <button type="button" t-if='props.resModel == "sale.order"' class="btn btn-primary"
+                    style="margin-left: 5px;" t-on-click="onClickShopifySaleOrderImport">
+                Import Orders from Shopify
+            </button>
+
+            <button type="button" t-if='props.resModel == "res.partner"' class="btn btn-primary"
+                    style="margin-left: 5px;" t-on-click="onClickShopifyCustomerImport">
+                Import from Shopify
+            </button>
+
+        </xpath>
+
+    </t>
+</templates>

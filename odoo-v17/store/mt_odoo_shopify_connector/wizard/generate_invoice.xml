@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_generate_invoice_wizard_form" model="ir.ui.view">
+        <field name="name">generate.invoice.form.view</field>
+        <field name="model">generate.invoice</field>
+        <field name="arch" type="xml">
+            <form string="Select Instance">
+                <sheet>
+
+                    <div>
+                        <p colspan="2" class="alert alert-warning" role="alert">
+                            <u>
+                                <h3 style="font-weight:bold;color:#7d5a29">Note :</h3>
+                            </u>
+                            <b>
+                                Are you sure to generate Invoice in this shopify instance?
+                            </b>
+                        </p>
+                    </div>
+
+                    <group>
+                        <field name="shopify_instance_id" required="1" options="{'no_create':True,'no_create_edit':True}"/>
+                    </group>
+
+                    <footer>
+                        <button name="generate_invoice" string="Generate" type="object"
+                                class="oe_highlight"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel"/>
+                    </footer>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_generate_invoice" model="ir.actions.act_window">
+        <field name="name">Generate Invoice</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">generate.invoice</field>
+        <field name="view_id" ref="view_generate_invoice_wizard_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

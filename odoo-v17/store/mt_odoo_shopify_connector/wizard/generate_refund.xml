@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_generate_refund_wizard_form" model="ir.ui.view">
+        <field name="name">generate.refund.form.view</field>
+        <field name="model">generate.refund</field>
+        <field name="arch" type="xml">
+            <form string="Select Instance">
+                <sheet>
+
+                    <div>
+                        <p colspan="2" class="alert alert-warning" role="alert">
+                            <u>
+                                <h3 style="font-weight:bold;color:#7d5a29">Note :</h3>
+                            </u>
+                            <b>
+                                Are you sure to generate Refund in this shopify instance?
+                            </b>
+                        </p>
+                    </div>
+
+                    <group>
+                        <field name="shopify_instance_id" required="1" options="{'no_create':True,'no_create_edit':True}"/>
+                    </group>
+
+                    <footer>
+                        <button name="generate_refund_from_order" string="Refund from Order" type="object"
+                                class="oe_highlight" invisible="context.get('active_model')!='sale.order'"/>
+                        <button name="generate_refund" string="Refund from Credit Invoice" type="object"
+                                class="oe_highlight" invisible="context.get('active_model')!='account.move'"/>
+                        <button string="Cancel" class="oe_highlight" special="cancel"/>
+                    </footer>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_generate_refund" model="ir.actions.act_window">
+        <field name="name">Generate Refund</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">generate.refund</field>
+        <field name="view_id" ref="view_generate_refund_wizard_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

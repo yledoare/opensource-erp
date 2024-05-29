@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_export_product_shopify_wizard_manager,access.export.product.shopify.wizard,model_export_product_shopify_wizard,,1,1,1,1
+

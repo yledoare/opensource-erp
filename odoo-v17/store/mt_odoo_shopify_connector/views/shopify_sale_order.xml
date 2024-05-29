@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_shopify_sale_order_form_inherit" model="ir.ui.view">
+        <field name="name">shopify.sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header" position="inside">
+                <button name="shopify_order_update_button" string="Update Order in Shopify" type="object" 
+                invisible = "state not in ['draft', 'sent','sale'] or id == False"
+                
+                class="btn btn-primary"/>
+            </xpath>
+
+            <xpath expr="//field[@name='product_template_id']" position="attributes">
+                <attribute name="domain">[('shopify_instance_id','=',parent.shopify_instance_id),('shopify_instance_id','!=',False)]</attribute>
+                <attribute name="help">Please select shopify instance to see corresponding Products. </attribute>
+            </xpath> 
+            <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="domain">[('shopify_instance_id','=',shopify_instance_id),('shopify_instance_id','!=',False)]</attribute>
+            </xpath>  
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="shopify_instance_id" required = "1" force_save="1" options="{'no_quick_create':True,'no_create_edit':True}" 
+                    readonly = "shopify_instance_id != False"/>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="shopify_id" readonly="1"/>
+                <field name="is_shopify_order" readonly="1"/>
+                <field name="is_exported" readonly="1"/>
+                <field name="shopify_status" readonly="1"/>                
+                <field name="shopify_fulfillment_status" readonly="1"/>                
+            </xpath>
+
+            <xpath expr="//notebook/page[2]" position="after">
+                <page string="Shopify Order Details">
+                    <separator name="Order_data" string="Order" />
+
+                    <group col="3">
+                        <group>
+                            <field name="shopify_order_no" string ="Order No :" readonly="1"/>
+                            <field name="shopify_processing_method" string ="Order Processing Method :" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="shopify_order_date" string ="Order Date :" readonly="1"/>
+                        </group>
+
+                        <group>
+                            <field name="shopify_order_subtotal" string ="Order Sub Total:" readonly="1"/>
+                            <field name="shopify_order_total_tax" string ="Order Total tax:" readonly="1"/>
+                            <field name="shopify_order_total" string ="Order Total :" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="shopify_order_url" string ="Order URL :" readonly="1"/>
+                    </group>
+
+                    <separator name="Order_payment_status" string="Payment Status" />
+                    <group>
+                        <group>
+                            <field name="shopify_status" string ="Order Status :" readonly="1"/> 
+                            <field name="shopify_fulfillment_status" string ="Fulfillment Status :" readonly="1"/> 
+                        </group>
+                    </group>
+                    <separator name="Shopify_Order_Note" string="Order Note" />
+                    <group>
+                        <group>
+                            <field name="shopify_order_note" string ="Order Note :"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="/form/sheet/notebook/page[1]/field[@name='order_line']/tree/field[@name='name']"
+                   position="after">
+                <field name="shopify_so_line_id" invisible="1"/>
+            </xpath>
+
+        </field>
+    </record>
+
+    
+    <record id="view_shopify_sale_order_tree_inherit" model="ir.ui.view">
+        <field name="name">sale.order.tree.inherit.shopify</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//tree" position="attributes">
+                <attribute name="js_class">shopify_import_sale_order_button</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='activity_ids']" position="after">
+                <field name="shopify_id" readonly="1"/>
+                <field name="shopify_instance_id" readonly="1"/>
+                <field name="is_exported" readonly="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_shopify_sale_order_search_filter_inherit" model="ir.ui.view">
+        <field name="name">view.shopify.sale.order.search.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='my_sale_orders_filter']" position="after">
+                <filter string="shopify Synced Orders" name="shopify_imported_orders" domain="[('is_exported', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_sale_order_tree_shopify" model="ir.actions.act_window">
+        <field name="name">Sale Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="sale.view_order_tree"/>
+        <field name="context">{'search_default_shopify_imported_orders': 1}</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    
+    <record id="action_call_wizard_generate_invoice" model="ir.actions.server">
+        <field name="name">Generate Invoice</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="binding_model_id" ref="model_sale_order"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.action_generate_invoice()
+        </field>
+    </record>  
+    
+    <record id="action_call_shopify_order_wizard" model="ir.actions.server">
+        <field name="name">Shopify Order Actions</field>
+        <field name="model_id" ref="model_sale_order"/>
+        <field name="binding_model_id" ref="model_sale_order"/>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+                action = records.action_shopify_order_wizard()
+        </field>
+    </record>         
+</odoo>
