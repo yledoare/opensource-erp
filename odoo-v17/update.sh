@@ -3,7 +3,7 @@ ODOO="17.0"
 install -d addons/oca
 install -d filestore
 
-for oca in account-invoicing
+for oca in account-invoicing server-env
 do
   [ ! -e addons/$oca ] && git clone https://github.com/OCA/$oca.git addons/$oca
   cd addons/$oca || exit 1
