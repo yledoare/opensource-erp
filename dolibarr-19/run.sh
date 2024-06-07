@@ -9,9 +9,9 @@ wget https://raw.githubusercontent.com/Dolibarr/dolibarr/develop/build/docker/do
 sed -i 's/3306:3306/3319:3306/' docker-compose.yml
 sed -i 's/8080:80/8119:80/' docker-compose.yml
 sed -i 's/80:80/8019:80/' docker-compose.yml
-sed -i 's/9000:9000/9001:9001/' docker-compose.yml
-sed -i 's/25:25/2525:2525/' docker-compose.yml
-sed -i 's/25:1025/2525:2525/' docker-compose.yml
+sed -i 's/9000:9000/9019:9000/' docker-compose.yml
+sed -i 's/8081:1080/8219:1080/' docker-compose.yml
+sed -i 's/25:1025/2518:1025/' docker-compose.yml
 sed -i 's/host-gateway/127.0.0.1/' docker-compose.yml
 sed -i 's/rootpassfordev/rootpwd/' docker-compose.yml
 sed -i 's/build: ./image: dolibarr-develop/' docker-compose.yml
