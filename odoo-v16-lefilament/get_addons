@@ -1,0 +1,222 @@
+#!/bin/sh
+
+# set -e
+
+ODOO_ROOT_DIR=${ODOO_ROOT_DIR:-'/opt/odoo'}
+SAVE_COMMITS_DIR=${SAVE_COMMITS_DIR:-'/opt/odoo_commits'}
+SAVE_COMMITS_FILENAME=${SAVE_COMMITS_FILENAME:-'custom_addons'}
+TMP_REPO_PATH=${TEMP_REPO_PATH:-'/tmp/repo'}
+
+CSV_FILE="${SAVE_COMMITS_DIR}/${SAVE_COMMITS_FILENAME}"
+CSV_HEADERS='repo;ref;commit;module;dst'
+
+# logging section: begin
+STYLE_FGBLACK='\033[30m'
+STYLE_FGRED='\033[31m'
+STYLE_FGGREEN='\033[32m'
+STYLE_FGYELLOW='\033[33m'
+STYLE_FGBLUE='\033[34m'
+STYLE_FGMAGENTA='\033[35m'
+STYLE_FGCYAN='\033[36m'
+STYLE_FGLIGHTGRAY='\033[37m'
+STYLE_BGBLACK='\033[40m'
+STYLE_BGRED='\033[41m'
+STYLE_BGGREEN='\033[42m'
+STYLE_BGYELLOW='\033[43m'
+STYLE_BGBLUE='\033[44m'
+STYLE_BGMAGENTA='\033[45m'
+STYLE_BGCYAN='\033[46m'
+STYLE_BGLIGHTGRAY='\033[47m'
+STYLE_DEFAULT='\033[39m'
+STYLE_BOLD='\033[1m'
+STYLE_NORMAL='\033[0m'
+
+print_info() {
+  msg="$1"
+  echo "${STYLE_FGBLUE}info: ${msg}${STYLE_DEFAULT}"
+}
+
+print_success() {
+  msg="$1"
+  print_info "${msg} ${STYLE_FGGREEN}success${STYLE_DEFAULT}"
+}
+
+print_failed() {
+  msg="$1"
+  print_info "${msg} ${STYLE_FGRED}failed${STYLE_DEFAULT}"
+}
+
+print_err() {
+  msg="$1"
+  exit_code="${2:-0}"
+  echo "${STYLE_BOLD}${STYLE_FGRED}err: ${msg}${STYLE_DEFAULT}${STYLE_NORMAL}"
+  [ "$exit_code" != "0" ] && exit_script "$exit_code"
+}
+
+exit_script() {
+  exit_code="${1:-0}"
+  exit "$exit_code"
+}
+# logging section: end
+
+save_commit() {
+  repo="$1"
+  ref="$2"
+  commit="$3"
+  module="$4"
+  dst="$5"
+
+  if [ -f "$CSV_FILE" ]; then
+    if [ "$(head --lines=1 $CSV_FILE)" != "$CSV_HEADERS" ]; then
+      sed -i "1s/^/${CSV_HEADERS}\n/" "$CSV_FILE"
+      if [ "$?" -ne 0 ]; then
+        return 1
+      fi
+    fi
+  else
+    echo "$CSV_HEADERS" > "$CSV_FILE"
+  fi
+  echo "${repo};${ref};${commit};${module};${dst}" >> "$CSV_FILE"
+  if [ "$?" -ne 0 ]; then
+    return 1
+  fi
+  return 0
+}
+
+repo="$1"
+shift
+ref="$1"
+shift
+dst="$1"
+shift
+modules="$@"
+
+# Clonning repo.
+# set +e
+log_action="repo '$repo': clonning [no tree + branch]..."
+print_info "$log_action"
+git clone --branch "${ref}" --filter=tree:0 "${repo}" "${TMP_REPO_PATH}"
+if [ "$?" -eq 0 ]; then
+  print_success "$log_action"
+else
+  print_failed "$log_action"
+  log_action="repo '$repo': clonning [no tree]..."
+  print_info "$log_action"
+  git clone --filter=tree:0 "${repo}" "${TMP_REPO_PATH}"
+  if [ "$?" -eq 0 ]; then
+    print_success "$log_action"
+  else
+    print_failed "$log_action"
+    log_action="repo '$repo': clonning [branch]..."
+    print_info "$log_action"
+    git clone --single-branch --branch "${ref}" --depth 1 "${repo}" "${TMP_REPO_PATH}"
+    if [ "$?" -eq 0 ]; then
+      print_success "$log_action"
+    else
+      print_failed "$log_action"
+      log_action="repo '$repo': clonning [classic]..."
+      print_info "$log_action"
+      git clone "${repo}" "${TMP_REPO_PATH}"
+      if [ "$?" -eq 0 ]; then
+        print_success "$log_action"
+      else
+        print_failed "$log_action"
+        print_err "unable to clone repo '$repo'" 1
+      fi
+    fi
+  fi
+fi
+# set -e
+
+## Get module code and save informations about it in a CSV file.
+
+# Checkout to ref.
+log_action="repo '${repo}': checkout to '${ref}'..."
+print_info "$log_action"
+git -C "${TMP_REPO_PATH}" checkout "${ref}"
+if [ "$?" -eq 0 ]; then
+  print_success "$log_action"
+else
+  print_failed "$log_action"
+  print_err "unable to checkout to '${ref}' in repo '${repo}'" 2
+fi
+
+# Get commit number.
+log_action="repo '${repo}': getting commit number..."
+print_info "$log_action"
+commit="$(git -C ${TMP_REPO_PATH} rev-parse HEAD)"
+if [ "$?" -eq 0 ]; then
+  print_success "$log_action"
+else
+  print_failed "$log_action"
+  print_err "unable to get commit number in repo '${repo}'" 3
+fi
+
+# Get selected modules from repo.
+if [ -n "$modules" ]; then
+  print_info "repo '${repo}': repo with multiple modules detected, modules selected: [$(echo $modules | sed 's/ /, /g')]"
+
+  # Install each module.
+  for module in $modules; do
+    module_dst="${ODOO_ROOT_DIR}/${dst}/${module}"
+    if [ -d "$module_dst" ]; then
+      print_info "module '${module}': destination '${module_dst}' already exist removing..."
+      rm -r "$module_dst"
+    fi
+    log_action="module '${module}': moving module code to directory '${module_dst}'..."
+    print_info "$log_action"
+    mv "${TMP_REPO_PATH}/${module}" "${ODOO_ROOT_DIR}/${dst}/"
+    if [ "$?" -eq 0 ]; then
+      print_success "$log_action"
+    else
+      print_failed "$log_action"
+      print_err "unable to move module '${module}' from repo '${repo}' to directory '${module_dst}'" 5
+    fi
+    log_action="module '${module}': saving module informations..."
+    print_info "$log_action"
+    save_commit "$repo" "$ref" "$commit" "$module" "$dst"
+    if [ "$?" -eq 0 ]; then
+      print_success "$log_action"
+    else
+      print_failed "$log_action"
+      print_err "unable to save informations of module '${module}' in file '${CSV_FILE}'" 6
+    fi
+  done
+# Get repo as a module.
+else
+  module_dst="${ODOO_ROOT_DIR}/${dst}"
+  module="$(basename $dst)"
+  print_info "repo '${repo}': repo as a single module detected: '${module}'"
+  if [ -d "$module_dst" ]; then
+    print_info "module '${module}': destination '${module_dst}' already exist removing..."
+    rm -r "$module_dst"
+  fi
+  log_action="module '${module}': creating destination directory '${module_dst}'..."
+  print_info "$log_action"
+  mkdir -p "$module_dst"
+    if [ "$?" -eq 0 ]; then
+      print_success "$log_action"
+    else
+      print_failed "$log_action"
+      print_err "unable to create destination directory '${module_dst}' for '${module}' from repo '${repo}'" 4
+    fi
+  log_action="module '${module}': moving module code to directory '${module_dst}'..."
+  print_info "$log_action"
+  mv ${TMP_REPO_PATH}/* "$module_dst"
+    if [ "$?" -eq 0 ]; then
+      print_success "$log_action"
+    else
+      print_failed "$log_action"
+      print_err "unable to move code of module '${module}' from repo '${repo}' to directory '${module_dst}'" 5
+    fi
+  log_action="module '${module}': saving module informations..."
+  print_info "$log_action"
+  save_commit "$repo" "$ref" "$commit" "$module" "$dst"
+  if [ "$?" -eq 0 ]; then
+    print_success "$log_action"
+  else
+    print_failed "$log_action"
+    print_err "unable to save informations of module '${module}' in file '${CSV_FILE}'" 6
+  fi
+fi
+rm -r "${TMP_REPO_PATH}"

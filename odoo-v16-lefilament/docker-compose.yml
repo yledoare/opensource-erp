@@ -1,14 +1,33 @@
-version: '3.1'
+version: "2.1"
 services:
-  web:
-    image: odoo-16-lefilament
-    depends_on:
-      - db
-    ports:
-      - "8164:8069"
-  db:
-    image: postgres:13
-    environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_PASSWORD=odoo
-      - POSTGRES_USER=odoo
+    odoo:
+        build: .
+        container_name: odoo16
+        depends_on:
+            - db
+        tty: true
+        volumes:
+            - filestore:/opt/odoo/data:z
+        restart: unless-stopped
+        command:
+            - odoo
+
+    db:
+        image: postgres:15-alpine
+        container_name: odoo16_db
+        environment:
+            POSTGRES_USER: "odoo"
+            POSTGRES_PASSWORD: "odoo"
+        volumes:
+            - db:/var/lib/postgresql/data:z
+        restart: unless-stopped
+
+networks:
+    default:
+        driver_opts:
+            encrypted: 1
+
+volumes:
+    filestore:
+    db:
+
