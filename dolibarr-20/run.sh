@@ -1,4 +1,4 @@
-DOLIBARR=20.0.3
+DOLIBARR=20.0.4
 [ ! -e $DOLIBARR.tar.gz ] && wget https://github.com/Dolibarr/dolibarr/archive/refs/tags/$DOLIBARR.tar.gz
 [ ! -e dolibarr-$DOLIBARR ] && tar xzvf $DOLIBARR.tar.gz
 cd dolibarr-$DOLIBARR 
