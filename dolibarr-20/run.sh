@@ -6,6 +6,7 @@ install -d build/docker
 
 cp ../docker-compose.yml build/docker
 cp ../Dockerfile build/docker
+cp ../docker-run.sh build/docker
 
 cd build/docker
 
