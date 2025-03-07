@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+    mariadb-prod:
+        container_name: dolibarr-20-mariadb
+        image: mariadb:latest
+        environment:
+            MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PWD
+            MYSQL_DATABASE: "dolibarr-20"
+
+    web:
+        container_name: dolibarr-20-web
+        build: .
+
+        volumes:
+         - ../../htdocs:/var/www/html/
+         - ../../documents:/var/www/html/documents
+
+        depends_on:
+            - mariadb-prod
+        environment:
+            HOST_USER_ID: $HOST_USER_ID
+            HOST_GROUP_ID: $HOST_GROUP_ID
+            DOLI_ROOT_PASSWORD: $MYSQL_ROOT_PWD
+            DOLI_DATABASE: "dolibarr-20"
+            DOLI_DB_SERVER: "mariadb-20"
+        ports:
+            - "8080:80"
