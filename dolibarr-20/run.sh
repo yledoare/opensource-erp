@@ -2,6 +2,9 @@ DOLIBARR=20.0.4
 [ ! -e $DOLIBARR.tar.gz ] && wget https://github.com/Dolibarr/dolibarr/archive/refs/tags/$DOLIBARR.tar.gz
 [ ! -e dolibarr-$DOLIBARR ] && tar xzvf $DOLIBARR.tar.gz
 cd dolibarr-$DOLIBARR 
+
+sed -i 's@force_install_main_data_root = null@force_install_main_data_root = '/var/documents'@' htdocs/install/install.forced.docker.php 
+
 install -d build/docker
 
 cp ../docker-compose.yml build/docker
