@@ -12,7 +12,8 @@ bash run.sh
 docker-compose logs --tail=20 -f framadate
 ```
 
-# Fix
+# Fix on reverse proxy / Docker / Https
 
 After install
+
 set $dolibarr_main_force_https='0' and $dolibarr_main_url_root in conf/conf.php 
