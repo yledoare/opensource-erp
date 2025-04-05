@@ -5,7 +5,7 @@ cd dolibarr-$DOLIBARR
 install -d build/docker
 cd build/docker
 rm docker-compose.yml
-wget https://raw.githubusercontent.com/Dolibarr/dolibarr/develop/build/docker/docker-compose.yml
+wget https://raw.githubusercontent.com/Dolibarr/dolibarr/refs/heads/21.0/build/docker/docker-compose.yml
 sed -i 's/3306:3306/3319:3306/' docker-compose.yml
 sed -i 's/8080:80/8119:80/' docker-compose.yml
 sed -i 's/80:80/8019:80/' docker-compose.yml
@@ -18,7 +18,7 @@ sed -i 's/build: ./image: dolibarr-develop/' docker-compose.yml
 sed -i 's/web:/web19:/' docker-compose.yml
 sed -i 's/mail:/mail19:/' docker-compose.yml
 sed -i 's/phpmyadmin:/phpmyadmin19:/' docker-compose.yml
-sed -i 's/mariadb:/mariadb19:/' docker-compose.yml
+sed -i 's/mariadb-prod:/mariadb19-prod:/' docker-compose.yml
 sed -i 's/mariadb19:latest/mariadb:latest/' docker-compose.yml
 sed -i 's/- mail/- mail19/g' docker-compose.yml
 sed -i 's/- mariadb/- mariadb19/g' docker-compose.yml
