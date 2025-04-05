@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+    db:
+        container_name: dolibarr-20-mariadb
+        image: mariadb:latest
+        environment:
+            MARIADB_ROOT_PASSWORD: $MYSQL_ROOT_PWD
+            MARIADB_DATABASE: "dolibarr-20"
+            MARIADB_USER: "dolibarr"
+            MARIADB_PASSWORD: $MYSQL_ROOT_PWD
+
+    web:
+        container_name: dolibarr-20-web
+        build: .
+
+        volumes:
+         - ../../htdocs:/var/www/html/
+         - ../../documents:/var/documents
+
+        depends_on:
+            - db
+        environment:
+            HOST_USER_ID: $HOST_USER_ID
+            HOST_GROUP_ID: $HOST_GROUP_ID
+            DOLI_ROOT_PASSWORD: $MYSQL_ROOT_PWD
+            DOLI_DATABASE: "dolibarr-20"
+            DOLI_DB_SERVER: "dolibarr-20-mariadb"
+        ports:
+            - "8080:80"
