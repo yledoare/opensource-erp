@@ -1,3 +1,4 @@
+docker exec -t odoo-v16_web_1 bash -c '/usr/bin/python3 /usr/bin/odoo --version'
 docker cp list-users.py odoo-v16_web_1:.
 docker cp shell.sh odoo-v16_web_1:.
 docker exec -t odoo-v16_web_1 bash -c '/bin/bash /shell.sh'
